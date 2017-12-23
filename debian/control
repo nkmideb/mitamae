@@ -1,0 +1,20 @@
+Source: mitamae
+Section: admin
+Priority: extra
+Maintainer: Sorah Fukumori <her@sorah.jp>
+Build-Depends: debhelper (>=9),
+  bison,
+  ruby2.0 | ruby | ruby-interpreter,
+  rake,
+  pkg-config,
+  git,
+  libssl-dev
+Standards-Version: 3.9.7
+Homepage: https://github.com/itamae-kitchen/mitamee
+
+Package: mitamae
+Architecture: any
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Configuration management tool embedding
+ mruby, which is alternative implementation of Itamae

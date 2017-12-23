@@ -1,0 +1,15 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: mitamae
+Source: https://github.com/itamae-kitchen/mitamae
+
+Files: *
+Copyright: 2016 Takashi Kokubun, 2013-2015 Ryota Arai
+License: Expat
+
+Files: debian/*
+Copyright: Sorah Fukumori
+License: Expat
+
+#----------------------------------------------------------------------------
+# Files marked as NO_LICENSE_TEXT_FOUND may be covered by the following
+# license/copyright files.
