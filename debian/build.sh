@@ -15,9 +15,10 @@ image_tag=mitamae-${dist}
 set -ex
 cd "$(dirname $0)/.."
 here="$(pwd)"
+mkdir -p debian/out
 docker build -f debian/Dockerfile.${dist} -t "$image_tag" "$here"
 source_archive="${NAME}_${version}.orig.tar.gz"
-git archive --format=tar --prefix "${NAME}-${version}/" "v${version}" | gzip > "$source_archive"
+git archive --format=tar --prefix "${NAME}-${version}/" "v${version}" | gzip > "debian/out/$source_archive"
 gpg --export "$gpg_user" > pub.asc
 trap "rm pub.asc" EXIT
 
@@ -25,12 +26,10 @@ trap "rm pub.asc" EXIT
 export GPG_TTY=$(tty)
 echo | gpg -u "${gpg_user}" --clearsign --output /dev/null
 
-mkdir -p debian/out
-
 cmds=$(mktemp)
 cat >${cmds} <<-EOF
-tar xf /src/${source_archive}
-ln -s /src/${source_archive} /build/
+tar xf /output/${source_archive}
+ln -s /output/${source_archive} /build/
 cd "${NAME}-${version}"
 cp -a /debian .
 gpg2 --import < /src/pub.asc
