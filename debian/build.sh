@@ -10,7 +10,7 @@ if [ x"$gpg_user" = x"" ]; then
   exit 1
 fi
 
-image_tag=mitamae-${dist}
+image_tag=${NAME}-${dist}
 
 set -ex
 cd "$(dirname $0)/.."
@@ -31,11 +31,15 @@ cat >${cmds} <<-EOF
 tar xf /output/${source_archive}
 ln -s /output/${source_archive} /build/
 cd "${NAME}-${version}"
-cp -a /debian .
+rsync -av --exclude '/debian/out/' /debian .
+
 gpg2 --import < /src/pub.asc
 export DEBSIGN_KEYID=0x\$(gpg2 --with-colons --list-keys|grep '^sub:'|head|cut -d: -f 5)
+
 sed -i -e 's/_dist_/${dist}/g' debian/changelog
+
 debuild -pgpg2
+
 cp -pv /build/*.{deb,debian.tar.xz,dsc,changes} /output/
 chown $(id -u):$(id -g) /output/*
 
