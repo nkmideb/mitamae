@@ -9,10 +9,10 @@ def gem_config(conf)
   conf.gem mgem: 'mruby-io',             checksum_hash: '6836f424c5ff95d0114a426010b22254804bc9a3'
   conf.gem mgem: 'mruby-open3',          checksum_hash: 'b7480b6300a81d0e5fac469a36a383518e3dfc78'
   conf.gem mgem: 'mruby-shellwords',     checksum_hash: '2a284d99b2121615e43d6accdb0e4cde1868a0d8'
-  conf.gem mgem: 'mruby-specinfra',      checksum_hash: '22a54436fe53afd310ad4473d28edd03dd960a24'
+  conf.gem mgem: 'mruby-specinfra',      checksum_hash: 'd802a755cfa94675c6df80547ca553abb323ec7f'
+  conf.gem mgem: 'mruby-socket',         checksum_hash: 'a8b6d6ee4c6ccea81a805cc9204b36c3792123c9'
   conf.gem github: 'k0kubun/mruby-erb',  checksum_hash: '978257e478633542c440c9248e8cdf33c5ad2074'
   conf.gem github: 'eagletmt/mruby-etc', checksum_hash: 'v0.1.0'
-  conf.gem github: 'take-cheeze/mruby-socket', checksum_hash: '7b4978b639e9b73296f5ced39dbcb722bf42cd0d' # https://github.com/iij/mruby-socket/issues/36
 end
 
 def debug_config(conf)
@@ -28,6 +28,7 @@ if build_targets == ['all']
   build_targets = %w[
     linux-x86_64
     linux-i686
+    linux-armhf
     darwin-x86_64
     darwin-i386
   ]
@@ -60,6 +61,25 @@ if build_targets.include?('linux-i686')
     [conf.cc, conf.cxx, conf.linker].each do |cc|
       cc.flags << "-m32"
     end
+
+    debug_config(conf)
+    gem_config(conf)
+  end
+end
+
+if build_targets.include?('linux-armhf')
+  MRuby::CrossBuild.new('arm-linux-gnueabihf') do |conf|
+    toolchain :gcc
+
+    # See also: tools/mruby-cli/Dockerfile
+    conf.cc.command       = 'arm-linux-gnueabihf-gcc'
+    conf.cxx.command      = 'arm-linux-gnueabihf-g++'
+    conf.linker.command   = 'arm-linux-gnueabihf-g++'
+    conf.archiver.command = 'arm-linux-gnueabihf-ar'
+
+    # For hone/mruby-yaml configure
+    conf.build_target = 'x86_64-pc-linux-gnu'
+    conf.host_target  = 'arm-linux-gnueabihf'
 
     debug_config(conf)
     gem_config(conf)

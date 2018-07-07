@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'shellwords'
 
 file :mruby do
   sh "curl -L --fail --retry 3 --retry-delay 1 https://github.com/mruby/mruby/archive/1.3.0.tar.gz -s -o - | tar zxf -"
@@ -60,25 +61,6 @@ end
 desc 'run integration tests'
 task 'test:integration' => 'test:serverspec'
 
-desc 'Benchmark recipe execution'
-task 'test:benchmark' => 'test:compile' do
-  Dir.chdir(__dir__) do
-    ENV['MITAMAE_BENCH_ITERATIONS'] ||= '100'
-
-    puts 'Preparing...'
-    sh 'mruby/build/host/bin/mitamae local benchmark/delete.rb'
-
-    puts "\n\n=== file creation ==="
-    sh 'time mruby/build/host/bin/mitamae local benchmark/create.rb'
-
-    puts "\n\n=== no operation ==="
-    sh 'time mruby/build/host/bin/mitamae local benchmark/create.rb'
-
-    puts "\n\n=== file deletion ==="
-    sh 'time mruby/build/host/bin/mitamae local benchmark/delete.rb'
-  end
-end
-
 desc "run all tests"
 if Object.const_defined?(:MiniRake)
   MiniRake::Task::TASKS.delete('test')
@@ -104,11 +86,9 @@ task 'release:build' do
       'i686-pc-linux-gnu'     => 'mitamae-i686-linux',
       'x86_64-apple-darwin14' => 'mitamae-x86_64-darwin',
       'x86_64-pc-linux-gnu'   => 'mitamae-x86_64-linux',
+      'arm-linux-gnueabihf'   => 'mitamae-armhf-linux',
     }.each do |build, bin|
-      FileUtils.cp(
-        "mruby/build/#{build}/bin/mitamae",
-        "mitamae-build/#{bin}",
-      )
+      sh "cp mruby/build/#{build.shellescape}/bin/mitamae mitamae-build/#{bin.shellescape}"
     end
   end
 end
@@ -116,6 +96,7 @@ end
 %w[
   linux-x86_64
   linux-i686
+  linux-armhf
   darwin-x86_64
   darwin-i386
 ].each do |target|
@@ -128,46 +109,8 @@ end
 desc "compress binaries in mitamae-build"
 task 'release:compress' do
   Dir.chdir(File.expand_path('./mitamae-build', __dir__)) do
-    Dir.glob('mitamae-*-darwin').each do |path|
-      sh "tar zcvf #{path}.tar.gz #{path}"
-    end
-
-    Dir.glob('mitamae-*-linux').each do |path|
+    Dir.glob('mitamae-*').each do |path|
       sh "tar zcvf #{path}.tar.gz #{path}"
     end
   end
 end
-
-desc "download ghr binary"
-task 'download:ghr' do
-  Dir.chdir(__dir__) do
-    next if File.exist?('ghr')
-
-    version = "v0.5.4"
-    zip_url =
-      if `uname` =~ /\ADarwin/
-        "https://github.com/tcnksm/ghr/releases/download/#{version}/ghr_#{version}_darwin_amd64.zip"
-      else
-        "https://github.com/tcnksm/ghr/releases/download/#{version}/ghr_#{version}_linux_amd64.zip"
-      end
-    sh "curl -L #{zip_url} > ghr.zip"
-    sh "unzip ghr.zip"
-  end
-end
-
-desc "upload compiled binary to GitHub"
-task 'release:upload' => 'download:ghr' do
-  unless ENV.has_key?('GITHUB_TOKEN')
-    puts 'Usage: rake release GITHUB_TOKEN="..."'
-    puts
-    abort 'Specify GITHUB_TOKEN generated from https://github.com/settings/tokens.'
-  end
-
-  Dir.chdir(__dir__) do
-    require_relative './mrblib/mitamae/version'
-    sh "./ghr -u itamae-kitchen v#{MItamae::VERSION} mitamae-build"
-  end
-end
-
-desc "release mitamae with current revision"
-task release: ['release:build', 'release:compress', 'release:upload']

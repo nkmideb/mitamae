@@ -1,3 +1,44 @@
+## v1.6.2
+
+- Allow specifying `-j`/`--node-json` and `-y`/`--node-yaml` multiple times
+  - The latter node JSON/YAML overrides the former JSON/YAML
+
+## v1.6.1
+
+- Add mitamae-armhf-linux binary in the released binaries for Raspberry Pi
+
+## v1.6.0
+
+- `http_request` resource requires `curl(1)` in a host
+  - `http_request` supports https request [#46](https://github.com/itamae-kitchen/mitamae/pull/46)
+  - `http_request` follows redirection
+  - POST or PUT `http_request` with request body `foo=bar` is interpreted properly
+
+## v1.5.7
+
+- Release binaries from Travis CI instead of k0kubun's machine
+
+## v1.5.6
+
+- Allow using `URI` module to write recipes
+- Improve error message on NoMethodError in resource context
+
+## v1.5.5
+
+- Allow using Symbol in `node[:ec2][xxx]` as well
+
+## v1.5.4
+
+- Fix error when seeing EC2 metadata from node
+- Return Hash::Mash instead of Hash from `node[xxx]` when it's host inventory
+
+## v1.5.3
+
+- Allow using `Kernel#at_exit` from recipe [#69](https://github.com/itamae-kitchen/mitamae/pull/69)
+
+## v1.5.2
+- Fix gem\_package resource to strip "default: " prefix from gem versions [#66](https://github.com/itamae-kitchen/mitamae/pull/63)
+
 ## v1.5.1
 - GC is enabled again
   - Please try v1.5.0 too if you encounter any trouble
