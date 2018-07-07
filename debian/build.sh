@@ -38,6 +38,7 @@ sed -i -e 's/_dist_/${dist}/g' debian/changelog
 debuild -pgpg2
 cp -pv /build/*.{deb,debian.tar.xz,dsc,changes} /output/
 chown $(id -u):$(id -g) /output/*
+
 EOF
 
 docker run --rm \

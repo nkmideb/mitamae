@@ -20,3 +20,6 @@ override_dh_auto_install:
 	find . -name 'mitamae'
 	install -m755 mruby/build/host/bin/mitamae debian/mitamae/usr/bin/
 	install -m755 mruby/build/host/bin/mitamae-secrets debian/mitamae/usr/bin/
+	echo '============ build_config report'
+	for x in mruby/build/mrbgems/*; do ( cd $$x; echo "conf.gem github: '$$(git remote get-url origin)', checksum_hash: '$$(git rev-parse HEAD)'" | sed 's|https://github.com/||g' | sed "s|.git'||"); done
+	echo '============='

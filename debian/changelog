@@ -1,3 +1,9 @@
+mitamae (1.6.2-0nkmi1~_dist_) _dist_; urgency=low
+
+  * bump
+
+ -- Sorah Fukumori <her@sorah.jp>  Sun, 08 Jul 2018 03:20:00 +0900
+
 mitamae (1.5.1-0nkmi1~_dist_) _dist_; urgency=low
 
   * Initial release.
