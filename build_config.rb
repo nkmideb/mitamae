@@ -4,15 +4,15 @@ def gem_config(conf)
   # be sure to include this gem (the cli app)
   conf.gem File.expand_path(File.dirname(__FILE__))
 
-  conf.gem mgem: 'mruby-file-stat',      checksum_hash: '2d3ea9b5d59d2b41133228a71c110b75cb30a31e'
-  conf.gem mgem: 'mruby-hashie',         checksum_hash: 'bfdbb8aebc8786bc9e88469dae87a8dfe8ec4300'
-  conf.gem mgem: 'mruby-io',             checksum_hash: '6836f424c5ff95d0114a426010b22254804bc9a3'
-  conf.gem mgem: 'mruby-open3',          checksum_hash: 'b7480b6300a81d0e5fac469a36a383518e3dfc78'
-  conf.gem mgem: 'mruby-shellwords',     checksum_hash: '2a284d99b2121615e43d6accdb0e4cde1868a0d8'
-  conf.gem mgem: 'mruby-specinfra',      checksum_hash: 'd802a755cfa94675c6df80547ca553abb323ec7f'
-  conf.gem mgem: 'mruby-socket',         checksum_hash: 'a8b6d6ee4c6ccea81a805cc9204b36c3792123c9'
-  conf.gem github: 'k0kubun/mruby-erb',  checksum_hash: '978257e478633542c440c9248e8cdf33c5ad2074'
-  conf.gem github: 'eagletmt/mruby-etc', checksum_hash: 'v0.1.0'
+  conf.gem mgem: 'mruby-file-stat',          checksum_hash: '2d3ea9b5d59d2b41133228a71c110b75cb30a31e'
+  conf.gem mgem: 'mruby-hashie',             checksum_hash: 'c69255a94debcd641f2087b569f5625509bde698'
+  conf.gem mgem: 'mruby-open3',              checksum_hash: 'b7480b6300a81d0e5fac469a36a383518e3dfc78'
+  conf.gem mgem: 'mruby-shellwords',         checksum_hash: '2a284d99b2121615e43d6accdb0e4cde1868a0d8'
+  conf.gem mgem: 'mruby-specinfra',          checksum_hash: '95994e41b5d40f50dbf0e10ff20a38bd124fd30c'
+  conf.gem github: 'k0kubun/mruby-erb',      checksum_hash: '978257e478633542c440c9248e8cdf33c5ad2074'
+  conf.gem github: 'k0kubun/mruby-tempfile', checksum_hash: 'e628c8fcb4bca3f3456640a8b56d1ae98c594e24'
+  conf.gem github: 'mrbgems/mruby-yaml',     checksum_hash: '94f429717fd234767a15186beacdc50ae582463c'
+  conf.gem github: 'eagletmt/mruby-etc',     checksum_hash: 'v0.1.0'
 end
 
 def debug_config(conf)
@@ -48,6 +48,11 @@ end
 if build_targets.include?('linux-x86_64')
   MRuby::Build.new('x86_64-pc-linux-gnu') do |conf|
     toolchain :gcc
+
+    [conf.cc, conf.linker].each do |cc|
+      cc.command = 'musl-gcc'
+      cc.flags += %w[-static -Os]
+    end
 
     debug_config(conf)
     gem_config(conf)

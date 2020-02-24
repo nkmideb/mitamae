@@ -7,6 +7,7 @@ module MItamae
         dry_run:   false,
         shell:     '/bin/sh',
         log_level: 'info',
+        plugins:   './plugins',
       }
 
       def initialize(args)
@@ -21,8 +22,9 @@ module MItamae
         end
 
         MItamae.logger = Logger.new(@options[:log_level])
-        MItamae.logger.info 'Starting MItamae...'
+        MItamae.logger.info 'Starting mitamae...'
 
+        Plugin.plugins_path = File.expand_path(@options[:plugins])
         Plugin.load_resources
 
         backend = Backend.new(shell: @options[:shell])
@@ -46,6 +48,7 @@ module MItamae
         opt.on('-n', '--dry-run') { |v| @options[:dry_run] = v }
         opt.on('--shell=VAL')     { |v| @options[:shell] = v }
         opt.on('--log-level=VAL') { |v| @options[:log_level] = v }
+        opt.on('--plugins=VAL')   { |v| @options[:plugins] = v }
         opt.parse!(args.dup)
       end
     end

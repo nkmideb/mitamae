@@ -4,7 +4,7 @@ module MItamae
       def apply
         if desired.exist
           if !current.exist && !@temppath
-            File.open(attributes.path, 'a') {}
+            run_command(["touch", attributes.path])
           end
 
           change_target = @modified ? @temppath : attributes.path
@@ -38,7 +38,6 @@ module MItamae
       end
 
       def set_current_attributes(current, action)
-        current.modified = false
         current.exist = FileTest.exist?(attributes.path)
         if current.exist
           current.mode = run_specinfra(:get_file_mode, attributes.path).stdout.chomp
@@ -103,6 +102,13 @@ module MItamae
           return
         end
 
+        # When the path currently doesn't exist yet, :change_file_xxx should be performed against `@temppath`.
+        # Checking that by `diff -q /dev/null xxx` doesn't work when xxx's content is "", because /dev/null's content is also "".
+        if !current.exist && desired.exist
+          @modified = true
+          return
+        end
+
         case run_command(["diff", "-q", compare_to, @temppath], error: false).exit_status
         when 1
           # diff found
@@ -149,7 +155,7 @@ module MItamae
         # XXX: `runner.tmpdir` is changed to '/tmp'
         @temppath = ::File.join('/tmp', Time.now.to_f.to_s)
 
-        File.open(@temppath, 'a') {}
+        run_command(["touch", @temppath])
         run_specinfra(:change_file_mode, @temppath, '0600')
 
         if content_file

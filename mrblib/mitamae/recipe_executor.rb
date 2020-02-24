@@ -18,8 +18,10 @@ module MItamae
         MItamae.logger.info "Recipe: #{node.path}"
         execute_children(node)
       when RecipeFromDefinition
-        MItamae.logger.debug "#{node.resource_type}[#{node.resource_name}]"
-        execute_children(node)
+        unless ResourceExecutor.create(node.definition, @runner).skip_condition?
+          MItamae.logger.debug "#{node.resource_type}[#{node.resource_name}]"
+          execute_children(node)
+        end
       when Resource::Base
         ResourceExecutor.create(node, @runner).execute
       else
@@ -32,7 +34,7 @@ module MItamae
         node.children.each do |resource|
           execute_node(resource)
         end
-        node.delayed_notifications.each do |notification|
+        node.delayed_notifications.uniq { |n| [n.action, n.action_resource] }.each do |notification|
           ResourceExecutor.create(notification.action_resource, @runner).execute(notification.action)
         end
       end

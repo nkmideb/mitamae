@@ -1,3 +1,147 @@
+## v1.11.0
+
+- Use musl-libc for x86 Linux binaries to remove libc dependency
+- Upgrade specinfra [from v2.82.8 to v2.82.9](https://github.com/mizzy/specinfra/compare/v2.82.8...v2.82.9)
+  ([mruby-specinfra@d67d734...95994e4](https://github.com/itamae-kitchen/mruby-specinfra/compare/d67d734...95994e4))
+
+## v1.10.5
+
+- Fix notifications to multiple `subscribes` from a single resource
+  - When multiple resources subscribed the same resource, only one of them had been notified since v1.7.1
+- Fix a notification message in `subscribes` to have a notified resource instead of a notifying resource
+- Upgrade specinfra [from v2.82.7 to v2.82.8](https://github.com/mizzy/specinfra/compare/v2.82.7...v2.82.8)
+  ([mruby-specinfra@58981a4...d67d734](https://github.com/itamae-kitchen/mruby-specinfra/compare/58981a4...d67d734))
+  - This resurrects the Symbol reference in `node[:ec2][:xxx]`, which was introduced in mitamae v1.5.5 and dropped in mitamae v1.10.0
+
+## v1.10.4
+
+- Pass a file name to `__FILE__` in a resource plugin instead of `(eval)`
+
+## v1.10.3
+
+- Load resource plugins properly with `--plugins`
+
+## v1.10.2
+
+- Upgrade specinfra [from v2.82.4 to v2.82.7](https://github.com/mizzy/specinfra/compare/v2.82.4...v2.82.7)
+  ([mruby-specinfra@f02c409...58981a4](https://github.com/itamae-kitchen/mruby-specinfra/compare/f02c409...58981a4))
+
+## v1.10.1
+
+- Add `--plugins` option to specify plugins directory
+- Change `MItamae` in help and log messages to `mitamae`
+
+## v1.10.0
+
+- Upgrade mruby-specinfra to an automated fork based on specinfra v2.82.4
+  [mruby-specinfra#12](https://github.com/itamae-kitchen/mruby-specinfra/pull/12)
+  - mruby-specinfra diff: [mruby-specinfra@21cd47d...f02c409](https://github.com/itamae-kitchen/mruby-specinfra/compare/21cd47d48cb15d4039cd8449f65cfc1ac1babe3b...f02c40935ab7c334bdb110edef243556e69e391b)
+  - upstream specinfra base is changed [from v2.60.2 to v2.82.4](https://github.com/mizzy/specinfra/compare/v2.60.2...v2.82.4)
+     - Some of the diff was already backported to mruby-specinfra individually. So the actual diff may vary.
+
+## v1.9.8
+
+- Detect OS name of CoreOS correctly [mruby-specinfra#11](https://github.com/itamae-kitchen/mruby-specinfra/pull/11)
+
+## v1.9.7
+
+- Stop defining `path`, `variables`, `source`, `recipe` local variables in recipe by default
+  - They have been accidentally exposed to recipes because of the environment of internal `instance_eval` call
+
+## v1.9.6
+
+- Fix a crash when `file` resource handles a file with nameless owner
+
+## v1.9.5
+
+- Upgrade mruby-yaml
+  - YAML.dump stops generating a double quotes literal when a string includes double quotes
+
+## v1.9.4
+
+- Upgrade mruby-yaml
+  - Introduce `Object#to_yaml`
+  - Psych-compatible multi-line literal is generated on YAML.dump
+
+## v1.9.3
+
+- Fix debug logs of defined resource (added since v1.9.2) to show correct names
+
+## v1.9.2
+
+- Respect `only_if`/`not_if` in a resource defined by `define`
+
+## v1.9.1
+
+- Upgrade mruby-yaml
+  - YAML.dump generates double quotes for String not starting with alphabet or number.
+  - Like CRuby's Psych, YAML.dump no longer generates `...`
+
+## v1.9.0
+
+- Upgrade mruby-yaml
+  - Disable `y`/`n` as shorthands of `true`/`false` [mruby-yaml#10](https://github.com/mrbgems/mruby-yaml/pull/10)
+  - Update libyaml from v0.1.6 to v0.2.2 [mruby-yaml#15](https://github.com/mrbgems/mruby-yaml/pull/15)
+
+## v1.8.0
+
+- `http_request` resource drops `check_error` attribute (v1.7.4 feature) and always raises
+  exceptions on 4XX or 5XX responses [#85](https://github.com/itamae-kitchen/mitamae/pull/85)
+
+## v1.7.8
+
+- Support Clear Linux OS [mruby-specinfra#10](https://github.com/itamae-kitchen/mruby-specinfra/pull/10)
+
+## v1.7.7
+
+- Add `Node#validate!` like Itamae [#83](https://github.com/itamae-kitchen/mitamae/pull/83)
+
+## v1.7.6
+
+- Allow using `content` attribute in `template` resource
+
+## v1.7.5
+
+- Upgrade mruby to v2.0.1
+
+## v1.7.4
+
+- Add `check_error` attribute to `http_request` resource
+
+## v1.7.3
+
+- Fix `file` resource error when it has `user` attribute which is not the same as mitamae executor.
+
+## v1.7.2
+
+- Support Amazon Linux 2 [mruby-specinfra#9](https://github.com/itamae-kitchen/mruby-specinfra/pull/9)
+
+## v1.7.1
+
+- Deduplicate delayed notifications
+  - The same notification by subscribes/notifices will run only once
+
+## v1.7.0
+
+- Upgrade mruby to v2.0.0
+
+## v1.6.6
+
+- Change JSON parse/generator from mruby-iijson to mruby-json to support `JSON.pretty_generate`
+
+## v1.6.5
+
+- Fix LocalJumpError inside `Hash#uniq` by backporting mruby's patch
+
+## v1.6.4
+
+- Support group name with spaces [mruby-specinfra#8](https://github.com/itamae-kitchen/mruby-specinfra/pull/8)
+
+## v1.6.3
+
+- Fix an error by creating a file with `content ""` with `owner`/`group` specified
+- "mitamae" is printed in the log instead of "MItamae"
+
 ## v1.6.2
 
 - Allow specifying `-j`/`--node-json` and `-y`/`--node-yaml` multiple times
