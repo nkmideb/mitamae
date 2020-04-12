@@ -1,8 +1,10 @@
 require 'serverspec'
 
 module MItamaeSpec
+  TARGET = 'linux-x86_64'
+
   def self.container
-    @container ||= ENV['DOCKER_CONTAINER'] || 'mitamae-serverspec'
+    @container ||= ENV.fetch('DOCKER_CONTAINER', 'mitamae-serverspec')
   end
 
   def apply_recipe(*recipes, cwd: '/', options: [], redirect: {})
@@ -16,7 +18,7 @@ module MItamaeSpec
   end
 
   def run_command(*cmd, cwd: '/', redirect: {})
-    system('docker', 'exec', '-it', '-w', cwd, MItamaeSpec.container, *cmd, redirect) || raise("Failed to execute: #{cmd.inspect}")
+    system('docker', 'exec', '-w', cwd, MItamaeSpec.container, *cmd, redirect) || raise("Failed to execute: #{cmd.inspect}")
   end
 end
 
@@ -29,7 +31,12 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     if ENV['SKIP_MITAMAE_COMPILE'] != '1'
-      system('docker-compose', 'run', '-e', 'BUILD_TARGET=linux-x86_64', 'compile') || raise
+      system(
+        'docker', 'run', '--rm', '-e', "BUILD_TARGET=#{MItamaeSpec::TARGET}",
+        '-v', "#{File.expand_path('..', __dir__)}:/home/mruby/code", '-w', '/home/mruby/code',
+        "k0kubun/mitamae-dockcross:#{MItamaeSpec::TARGET}", 'rake', 'compile',
+        'compile'
+      ) || raise
     end
     system('docker', 'rm', '-f', MItamaeSpec.container)
 
@@ -37,7 +44,7 @@ RSpec.configure do |config|
     # https://hub.docker.com/r/k0kubun/mitamae-spec/builds/
     system(
       'docker', 'run', '-d', '--name', MItamaeSpec.container,
-      '-v', "#{File.expand_path('mruby/build/x86_64-pc-linux-gnu')}:/mitamae",
+      '-v', "#{File.expand_path("mruby/build/#{MItamaeSpec::TARGET}")}:/mitamae",
       '-v', "#{File.expand_path('spec/recipes')}:/recipes",
       '-v', "#{File.expand_path('spec/plugins')}:/plugins",
       'k0kubun/mitamae-spec', 'bash', '-c', 'while true; do sleep 3600; done',
