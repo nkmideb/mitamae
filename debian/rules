@@ -9,7 +9,6 @@
 	dh $@
 
 override_dh_auto_configure:
-	cp debian/build_config.rb build_config.rb
 	rake mruby
 
 override_dh_auto_build:

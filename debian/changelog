@@ -1,6 +1,7 @@
 mitamae (1.12.0-0nkmi1~dist) unstable; urgency=medium
 
   * bump
+  * use upstream build_config.rb.lock
 
  -- Sorah Fukumori <her@sorah.jp>  Tue, 09 Feb 2021 12:56:01 +0900
 
