@@ -1,3 +1,14 @@
+## v1.12.0
+
+- Upgrade mruby from v2.0.1 to v2.1.2
+- Upgrade specinfra [from v2.82.12 to v2.82.23](https://github.com/mizzy/specinfra/compare/v2.82.12...v2.82.23)
+- Upgrade XCode used for darwin-x86\_64 to 12.4
+- Drop darwin-i386 support
+
+## v1.11.8
+
+- Support aarch64-darwin in binary releases
+
 ## v1.11.7
 
 - Avoid a hang on `gem_package` resource when nonexistent `gem_binary` is specified

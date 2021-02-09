@@ -43,11 +43,13 @@ RSpec.configure do |config|
     # k0kubun/mitamae-spec is automatically built from `spec/Dockerfile`:
     # https://hub.docker.com/r/k0kubun/mitamae-spec/builds/
     system(
-      'docker', 'run', '-d', '--name', MItamaeSpec.container,
+      'docker', 'run', '-d', '--privileged', '--rm', '--name', MItamaeSpec.container,
       '-v', "#{File.expand_path("mruby/build/#{MItamaeSpec::TARGET}")}:/mitamae",
       '-v', "#{File.expand_path('spec/recipes')}:/recipes",
       '-v', "#{File.expand_path('spec/plugins')}:/plugins",
-      'k0kubun/mitamae-spec', 'bash', '-c', 'while true; do sleep 3600; done',
+      'k0kubun/mitamae-spec', 'systemd',
     ) || raise
+    # Workaround to avoid letting systemd clean up /tmp after `mitamae local`
+    system('docker', 'exec', MItamaeSpec.container, 'systemctl', 'start', 'systemd-tmpfiles-clean', out: File::NULL)
   end
 end

@@ -4,7 +4,7 @@
 #     gem update --system is disabled on Debian, because it will overwrite the content of the rubygems Debian package, and might break your Debian system in subtle ways. The Debian-supported way to update rubygems is through apt-get, using Debian official repositories.
 # If you really know what you are doing, you can still update rubygems by setting the REALLY_GEM_UPDATE_SYSTEM environment variable, but please remember that this is completely unsupported by Debian.
 
-execute 'env REALLY_GEM_UPDATE_SYSTEM=1 gem update --no-ri --no-rdoc --system 2.7.3' do
+execute 'env REALLY_GEM_UPDATE_SYSTEM=1 gem update --no-doc --system 2.7.3' do
   not_if { run_command('gem --version').stdout.chomp == '2.7.3' }
 end
 
@@ -23,7 +23,7 @@ end
 
 # default gem
 gem_package 'bundler' do
-  version '1.16.0'
+  version '2.1.2'
   notifies :create, 'file[/tmp/bundler_is_installed]'
 end
 
