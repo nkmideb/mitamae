@@ -1,5 +1,7 @@
 def gem_config(conf)
   conf.gem File.expand_path(File.dirname(__FILE__))
+
+  conf.gem github: 'eagletmt/mitamae-secrets', checksum_hash: 'v0.1.1'
 end
 
 def debug_config(conf)
