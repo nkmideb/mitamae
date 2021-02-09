@@ -4,6 +4,7 @@ Priority: extra
 Maintainer: Sorah Fukumori <her@sorah.jp>
 Build-Depends: debhelper (>=9),
   bison,
+  curl,
   ruby2.0 | ruby | ruby-interpreter,
   rake,
   pkg-config,
