@@ -169,7 +169,14 @@ See [CHANGELOG.md](./CHANGELOG.md).
 
 ## Contributing
 
-Please refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
+When you develop your local changes, you can write an integration test under [`spec/`](./spec) and run it like:
+
+```
+bundle install
+bundle exec rake test:integration
+```
+
+This requires Docker on your local environment.
 
 ## License
 

@@ -1,3 +1,33 @@
+## v1.12.7
+
+- Add mruby-enum-ext
+
+## v1.12.6
+
+- Fix a build issue for Solaris
+
+## v1.12.5
+
+- Upgrade mruby-yaml
+  - No impact for behaviors. You can build this mitamae without curl to fetch libyaml.
+
+## v1.12.4
+
+- Upgrade specinfra [from v2.82.23 to v2.82.25](https://github.com/mizzy/specinfra/compare/v2.82.23...v2.82.25)
+  - Fix `undefined method 'basename' (NoMethodError)` in `package` resources
+
+## v1.12.3
+
+- Add `--no-color` option to disable colors
+
+## v1.12.2
+
+- Upgrade mruby from v2.1.2 to v3.0.0
+
+## v1.12.1
+
+- Allow defining top-level modules without `::` in recipes
+
 ## v1.12.0
 
 - Upgrade mruby from v2.0.1 to v2.1.2

@@ -27,7 +27,7 @@ builds:
     https://github.com/ksss/mruby-file-stat.git:
       url: https://github.com/ksss/mruby-file-stat.git
       branch: master
-      commit: 66cf135ff9642d96a6127a79b307f6314e606deb
+      commit: b81bc71a6f2ddd424fd5e544d2cccd289d4d7545
       version: 0.0.0
     https://github.com/k0kubun/mruby-hashie.git:
       url: https://github.com/k0kubun/mruby-hashie.git
@@ -42,7 +42,7 @@ builds:
     https://github.com/k0kubun/mruby-open3.git:
       url: https://github.com/k0kubun/mruby-open3.git
       branch: master
-      commit: b2dba93fdbd60dcff8aa20b6c56014ac89d267ad
+      commit: d6ab1bcd13446661c2e134ad8343caba9d15e59a
       version: 0.0.0
     https://github.com/fastly/mruby-optparse.git:
       url: https://github.com/fastly/mruby-optparse.git
@@ -57,17 +57,17 @@ builds:
     https://github.com/k0kubun/mruby-specinfra.git:
       url: https://github.com/k0kubun/mruby-specinfra.git
       branch: master
-      commit: f29062376e4cdca4c21401e1ed8a8551206be9e6
+      commit: 6581261797b38bc7698f27c22733f74fcc102b30
       version: 0.0.0
     https://github.com/k0kubun/mruby-tempfile.git:
       url: https://github.com/k0kubun/mruby-tempfile.git
       branch: master
-      commit: 26273b9f884bb4c9e58ba83010ccd5b4258fb82e
+      commit: 77736581bf971717aa2259144cf17bbb88b8d6b6
       version: 0.0.0
     https://github.com/mrbgems/mruby-yaml.git:
       url: https://github.com/mrbgems/mruby-yaml.git
       branch: master
-      commit: 0606652a6e99d902cd3101cf2d757a7c0c37a7fd
+      commit: 9f4408d4d46ffc8668ea07cc9c6249f33114d3a9
       version: 0.1.0
     https://github.com/k0kubun/mruby-erb.git:
       url: https://github.com/k0kubun/mruby-erb.git
