@@ -1,3 +1,35 @@
+## v1.14.1
+
+- Upgrade specinfra [from v2.83.3 to v2.87.0](https://github.com/mizzy/specinfra/compare/v2.83.3...v2.87.0)
+
+## v1.14.0
+
+- Migrate the cross-compilation toolchain to Zig
+  - All Linux targets use musl, so no libc dependency.
+  - Now linux-i386 is distributed instead of linux-i686
+- Upgrade mruby-yaml
+  - `123_456` is parsed as `123456` instead of `"123_456"`
+
+## v1.13.1
+
+- Upgrade specinfra [from v2.82.25 to v2.83.3](https://github.com/mizzy/specinfra/compare/v2.82.25...v2.83.3)
+
+## v1.13.0
+
+- `local_ruby_block` executes `code` under `cwd` if it's present
+
+## v1.12.10
+
+- Stream output of `run_command` with `--log-level debug` or `log_output: true` option
+
+## v1.12.9
+
+- Get encrypted passwords from `/etc/shadow` for some platforms
+
+## v1.12.8
+
+- Support Itamae v1.11.0's `sensitive` attribute in file resources
+
 ## v1.12.7
 
 - Add mruby-enum-ext
